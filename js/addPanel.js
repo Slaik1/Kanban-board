@@ -1,7 +1,9 @@
 const dataBase = new DataBase('https://649c69660480757192381e95.mockapi.io')
 const panelsStore = new PanelsStore('#panelsList')
 const elements = {
+    panel: document.querySelector('#addPanel'),
     input: document.querySelector('#addPanelInput'),
+    color: document.querySelector('#addPanelColor'),
     alert: document.querySelector('#alert'),
     addBtn: document.querySelector('#addPanelBtn')
 }
@@ -12,13 +14,14 @@ elements.addBtn.addEventListener('click', async () => {
         return
     }
 
-    const newPanel = {
+    let newPanel = {
         name: elements.input.value,
-        fields: []
+        color: elements.color.value,
+        notes: []
     }
 
     try {
-        await dataBase.addPanel(newPanel)
+        newPanel = await dataBase.addPanel(newPanel)
         panelsStore.add(newPanel)
         alert('The panel was successfully added')
     } catch (error) {
@@ -28,7 +31,11 @@ elements.addBtn.addEventListener('click', async () => {
     }
 })
 
-function alert(alert = null) {
+elements.color.addEventListener('input', () => {
+    elements.panel.style.background = elements.color.value
+})
+
+function alert(alert) {
     elements.alert.innerText = alert
 
     setTimeout(() => {

@@ -7,9 +7,10 @@ class PanelsStore {
     }
 
     createPanelElement = (element) => {
+
         const div = document.createElement('div')
         div.classList.add('board__panel')
-
+        div.style.background = element.color
 
         const titleWrapper = document.createElement('div')
         titleWrapper.classList.add('board__title')
@@ -35,12 +36,26 @@ class PanelsStore {
         const addItem = document.createElement('div')
         addItem.classList.add('board__addItem')
 
+        const alert =document.createElement('p')
+        alert.innerText = 'Add new note'
+
+        function alertUser(message) {
+            alert.innerText = message
+        
+            setTimeout(() => {
+                alert.innerText = 'Add new note'
+            },5000)
+        }
+
+        addItem.appendChild(alert)
+
         const addItemWrapper = document.createElement('div')
         addItemWrapper.classList.add('board__titleWrapper')
 
         const inputColor = document.createElement('input')
         inputColor.classList.add('board__color')
         inputColor.type = 'color'
+        inputColor.value = '#dadee5'
 
         inputColor.addEventListener('input', () => {
             addItem.style.background = inputColor.value
@@ -64,6 +79,30 @@ class PanelsStore {
 
         const buttonAddItem = document.createElement('button')
         buttonAddItem.innerText = 'Add'
+
+        buttonAddItem.addEventListener('click', async () => {
+            if (addItemTitle.value === '' || textarea.value === '') {
+                alertUser('Fill in the entry fields')
+                return
+            }
+
+            const newNote = {
+                title: addItemTitle.value,
+                text: textarea.value,
+                color: inputColor.value
+            }
+            element.notes.push(newNote)
+            try {
+                await dataBase.setNote(element.id, element.notes)
+                alertUser('The note was added')
+            } catch (error) {
+                alert(error)
+            }finally{
+                addItemTitle.value = ''
+                textarea.value = ''
+            }
+        })
+
         addItem.appendChild(buttonAddItem)
 
         div.appendChild(addItem)
@@ -78,6 +117,12 @@ class PanelsStore {
         })
     }
 
+    setAll = (panels) => {
+        this.panels = panels
+        this.clearDOM()
+        this.printDom()
+    }
+
     printDomLast = () => {
         const div = this.createPanelElement(this.panels.at(-1))
         this.panelsParentElement.appendChild(div)
@@ -86,12 +131,6 @@ class PanelsStore {
     add = (newEl) => {
         this.panels = [...this.panels, newEl]
         this.printDomLast()
-    }
-
-    setAll = (panels) => {
-        this.panels = panels
-        this.clearDOM()
-        this.printDom()
     }
 
     clearDOM() {

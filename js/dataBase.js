@@ -43,4 +43,13 @@ class DataBase {
         })
         return  await request.json()
     }
+
+    async setNote(panelId, noteArray) {
+        const request = await fetch(this.baseUrl + this.endpoints.panels + panelId, {
+            method: 'PUT',
+            headers: {'content-type':'application/json'},
+            body: JSON.stringify({notes: noteArray})
+        })
+        return await request.json()
+    }
 }

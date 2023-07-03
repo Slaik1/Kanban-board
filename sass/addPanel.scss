@@ -4,6 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 24px !important;
     transition: 0.4s ease;
     filter: blur(1px);
     opacity: 0.4;
@@ -28,12 +29,24 @@
         font-weight: 600;
     }
 
-    input {
-        all: unset;
-        box-sizing: border-box;
-        border-radius: 7px;
-        border: 2px solid #1F2633;
-        font-weight: 600;
+    .blurePanel__input {
+
+        .blurePanel__color {
+            margin-right: 20px;
+            border-radius: 7px;
+            height: 24px;
+        }
+    
+        .blurePanel__text {
+            // all: unset;
+            width: 230px;
+            box-sizing: border-box;
+            border-radius: 7px;
+            border: 2px solid #1F2633;
+            font-weight: 600;
+        }
     }
+
+
     
 }

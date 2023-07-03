@@ -44,6 +44,12 @@
             background: #DADEE570;
             //display: none;
 
+            p {
+                margin-bottom: 20px;
+                font-size: 18px;
+                font-weight: 600;
+            }
+
             .board__titleWrapper {
                 margin-bottom: 10px;
                 display: flex;
@@ -51,6 +57,7 @@
 
                 .board__color {
                     margin-right: 20px;
+                    border-radius: 7px;
                 }
 
                 .board__title {

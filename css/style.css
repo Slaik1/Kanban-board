@@ -405,6 +405,11 @@ table {
   border-radius: 8px;
   background: rgba(218, 222, 229, 0.4392156863);
 }
+.board .board__panel .board__addItem p {
+  margin-bottom: 20px;
+  font-size: 18px;
+  font-weight: 600;
+}
 .board .board__panel .board__addItem .board__titleWrapper {
   margin-bottom: 10px;
   display: flex;
@@ -412,6 +417,7 @@ table {
 }
 .board .board__panel .board__addItem .board__titleWrapper .board__color {
   margin-right: 20px;
+  border-radius: 7px;
 }
 .board .board__panel .board__addItem .board__titleWrapper .board__title {
   width: 200px;
@@ -469,6 +475,7 @@ table {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 24px !important;
   transition: 0.4s ease;
   filter: blur(1px);
   opacity: 0.4;
@@ -490,8 +497,13 @@ table {
   font-size: 16px;
   font-weight: 600;
 }
-.blurePanel input {
-  all: unset;
+.blurePanel .blurePanel__input .blurePanel__color {
+  margin-right: 20px;
+  border-radius: 7px;
+  height: 24px;
+}
+.blurePanel .blurePanel__input .blurePanel__text {
+  width: 230px;
   box-sizing: border-box;
   border-radius: 7px;
   border: 2px solid #1F2633;
