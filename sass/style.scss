@@ -1,0 +1,40 @@
+@import "normalize.scss";
+@import "reset.scss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import 'helpers.scss';
+@import 'board.scss';
+@import 'addPanel';
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #1F2633;
+    background: #DADEE5;
+}
+
+.container {
+    display: flex;
+    padding: 50px 0px 0px 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.board__panelsList {
+    display:flex;
+}
+
+.opacity {
+    visibility: hidden;
+    position: fixed;
+    z-index: 1;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5)
+}
