@@ -27,7 +27,6 @@ class NotesStore {
 
         const delBtn = div.children[2]
 
-        console.log(this.notes);
         delBtn.addEventListener('click', async () => {
             let index
             for (let i = 0; i < this.notes.length; i++) {
