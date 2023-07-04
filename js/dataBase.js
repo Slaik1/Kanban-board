@@ -52,4 +52,10 @@ class DataBase {
         })
         return await request.json()
     }
+
+    async deletePanel(panelId) {
+        await fetch(this.baseUrl + this.endpoints.panels + panelId, {
+            method: 'DELETE'
+        })
+    }
 }

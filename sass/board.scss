@@ -15,7 +15,22 @@
 
         .board__title {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+
+            .board__svg {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+
+                svg {
+                    margin-right: 13px;
+                    width: 30px;
+                    height: 30px;
+                    fill: #1F2633;
+                    stroke: #1F2633;
+                    cursor: pointer;
+                }
+            }
 
             h2 {
                 margin-bottom: 16px;
@@ -23,14 +38,7 @@
                 font-weight: 600;
             }
 
-            svg {
-                margin-right: 30px;
-                width: 30px;
-                height: 30px;
-                fill: #1F2633;
-                stroke: #1F2633;
-                cursor: pointer;
-            }
+
         }
 
         .board__addItem {
@@ -42,6 +50,7 @@
             padding: 24px;
             border-radius: 8px;
             background: #DADEE570;
+            @include shadow(3px, 3px);
             //display: none;
 
             p {
@@ -99,11 +108,13 @@
             overflow-y: auto;
 
             .board__item {
+                position: relative;
                 margin-bottom: 16px;
                 margin-right: 12px;
                 padding: 24px;
                 border-radius: 8px;
                 background: #DADEE570;
+                @include shadow(3px, 3px);
                 
 
                 .board__title {
@@ -116,6 +127,20 @@
                     font-size: 14px;
                     font-weight: 400;
                     line-height: 16px;
+                }
+
+                svg {
+                    position: absolute;
+                    top: 13px;
+                    right: 13px;
+                    width: 16px;
+                    height: 16px;
+                    fill: #1F2633;
+                    cursor: pointer;
+
+                    &:hover {
+                        fill: #484e58;
+                    }
                 }
             }
         }

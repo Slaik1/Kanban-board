@@ -15,14 +15,16 @@ class PanelsStore {
         const titleWrapper = document.createElement('div')
         titleWrapper.classList.add('board__title')
 
-        const title = document.createElement('h2')
-        title.innerText = element.name
-        titleWrapper.appendChild(title)
+        const svgWrapper = document.createElement('div')
+        svgWrapper.classList.add('board__svg')
 
-        titleWrapper.innerHTML += '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M18 2c2.206 0 4 1.794 4 4v12c0 2.206-1.794 4-4 4H6c-2.206 0-4-1.794-4-4V6c0-2.206 1.794-4 4-4zm0-2H6a6 6 0 0 0-6 6v12a6 6 0 0 0 6 6h12a6 6 0 0 0 6-6V6a6 6 0 0 0-6-6z" data-original="#000000"/><path d="M12 18a1 1 0 0 1-1-1V7a1 1 0 0 1 2 0v10a1 1 0 0 1-1 1z" data-original="#000000"/><path d="M6 12a1 1 0 0 1 1-1h10a1 1 0 0 1 0 2H7a1 1 0 0 1-1-1z" data-original="#000000"/></g></svg>'
-        const svg = titleWrapper.children[1]
+        svgWrapper.innerHTML += '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1ZM20 4h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" data-original="#000000"/><path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0ZM15 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z" data-original="#000000"/></g></svg>'
+        svgWrapper.innerHTML += '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve"><g><path d="M18 2c2.206 0 4 1.794 4 4v12c0 2.206-1.794 4-4 4H6c-2.206 0-4-1.794-4-4V6c0-2.206 1.794-4 4-4zm0-2H6a6 6 0 0 0-6 6v12a6 6 0 0 0 6 6h12a6 6 0 0 0 6-6V6a6 6 0 0 0-6-6z" data-original="#000000"/><path d="M12 18a1 1 0 0 1-1-1V7a1 1 0 0 1 2 0v10a1 1 0 0 1-1 1z" data-original="#000000"/><path d="M6 12a1 1 0 0 1 1-1h10a1 1 0 0 1 0 2H7a1 1 0 0 1-1-1z" data-original="#000000"/></g></svg>'
 
-        svg.addEventListener('click', () => {
+        const addPanelSvg = svgWrapper.children[1]
+        const deletePanelSvg = svgWrapper.children[0]
+
+        addPanelSvg.addEventListener('click', () => {
             if (addItem.style.display === 'none') {
                 addItem.style.display = 'flex'
                 return
@@ -30,8 +32,18 @@ class PanelsStore {
             addItem.style.display = 'none'
         })
 
-        div.appendChild(titleWrapper)
+        deletePanelSvg.addEventListener('click', async () => {
+            await dataBase.deletePanel(element.id)
+            div.remove()
+        })
 
+        titleWrapper.appendChild(svgWrapper)
+
+        const titlePanel = document.createElement('h2')
+        titlePanel.innerText = element.name
+        titleWrapper.appendChild(titlePanel)
+
+        div.appendChild(titleWrapper)
 
         const addItem = document.createElement('div')
         addItem.classList.add('board__addItem')
@@ -91,9 +103,12 @@ class PanelsStore {
                 text: textarea.value,
                 color: inputColor.value
             }
+
             element.notes.push(newNote)
+
             try {
                 await dataBase.setNote(element.id, element.notes)
+                notesStore.printDomLast()
                 alertUser('The note was added')
             } catch (error) {
                 alert(error)
@@ -106,7 +121,15 @@ class PanelsStore {
         addItem.appendChild(buttonAddItem)
 
         div.appendChild(addItem)
-        //Отправка element.fields на другой класс
+
+        const notesList = document.createElement('div')
+        notesList.classList.add('board__itemsList')
+
+        const notesStore = new NotesStore(notesList, element.id)
+        notesStore.setAll(element.notes)
+
+        div.appendChild(notesList)
+
         return div
     }
 

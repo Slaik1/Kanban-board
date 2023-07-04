@@ -20,15 +20,21 @@ elements.addBtn.addEventListener('click', async () => {
         notes: []
     }
 
-    try {
-        newPanel = await dataBase.addPanel(newPanel)
-        panelsStore.add(newPanel)
-        alert('The panel was successfully added')
-    } catch (error) {
-        alert(error)
-    } finally {
-        elements.input.value = ''
-    }
+    // try {
+    //     newPanel = await dataBase.addPanel(newPanel)
+    //     panelsStore.add(newPanel)
+    //     alert('The panel was successfully added')
+    // } catch (error) {
+    //     alert(error)
+    // } finally {
+    //     elements.input.value = ''
+    // }
+
+    newPanel = await dataBase.addPanel(newPanel)
+    panelsStore.add(newPanel)
+    alert('The panel was successfully added')
+    elements.input.value = ''
+    
 })
 
 elements.color.addEventListener('input', () => {

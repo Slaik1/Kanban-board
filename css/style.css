@@ -380,20 +380,25 @@ table {
 }
 .board .board__panel .board__title {
   display: flex;
+  flex-direction: column;
+}
+.board .board__panel .board__title .board__svg {
+  display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
 }
-.board .board__panel .board__title h2 {
-  margin-bottom: 16px;
-  font-size: 35px;
-  font-weight: 600;
-}
-.board .board__panel .board__title svg {
-  margin-right: 30px;
+.board .board__panel .board__title .board__svg svg {
+  margin-right: 13px;
   width: 30px;
   height: 30px;
   fill: #1F2633;
   stroke: #1F2633;
   cursor: pointer;
+}
+.board .board__panel .board__title h2 {
+  margin-bottom: 16px;
+  font-size: 35px;
+  font-weight: 600;
 }
 .board .board__panel .board__addItem {
   display: flex;
@@ -404,6 +409,7 @@ table {
   padding: 24px;
   border-radius: 8px;
   background: rgba(218, 222, 229, 0.4392156863);
+  box-shadow: 3px 3px 8px 0px rgba(34, 60, 80, 0.2);
 }
 .board .board__panel .board__addItem p {
   margin-bottom: 20px;
@@ -452,11 +458,13 @@ table {
   overflow-y: auto;
 }
 .board .board__panel .board__itemsList .board__item {
+  position: relative;
   margin-bottom: 16px;
   margin-right: 12px;
   padding: 24px;
   border-radius: 8px;
   background: rgba(218, 222, 229, 0.4392156863);
+  box-shadow: 3px 3px 8px 0px rgba(34, 60, 80, 0.2);
 }
 .board .board__panel .board__itemsList .board__item .board__title {
   margin-bottom: 8px;
@@ -467,6 +475,18 @@ table {
   font-size: 14px;
   font-weight: 400;
   line-height: 16px;
+}
+.board .board__panel .board__itemsList .board__item svg {
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  width: 16px;
+  height: 16px;
+  fill: #1F2633;
+  cursor: pointer;
+}
+.board .board__panel .board__itemsList .board__item svg:hover {
+  fill: #484e58;
 }
 
 .blurePanel {
