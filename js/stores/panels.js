@@ -130,6 +130,38 @@ class PanelsStore {
 
         div.appendChild(notesList)
 
+
+        div.draggable = 'true'
+
+        div.addEventListener('dragover', (event) => {
+            event.preventDefault()
+        })
+
+        div.addEventListener('dragstart', (event) => {
+            event.dataTransfer.setData('panel', JSON.stringify(element))
+        })
+
+        div.addEventListener('dragend', (event) => {
+            console.log('dragend');
+            
+        })
+
+        div.addEventListener('dragenter', () => {
+            console.log('b');
+        })
+
+        div.addEventListener('drop', (event) => {
+            const droppedPanel = JSON.parse(event.dataTransfer.getData('panel'))
+            const panelElement = this.createPanelElement(droppedPanel)
+            if (this.panelsParentElement.lastChild === div) {
+                this.panelsParentElement.insertBefore(panelElement, div.nextSibling)
+                div.remove()
+                return
+            }
+            this.panelsParentElement.insertBefore(panelElement, div)
+            div.remove()
+        })
+
         return div
     }
 
