@@ -553,6 +553,10 @@ a {
   display: flex;
 }
 
+.selected {
+  opacity: 1 !important;
+}
+
 .opacity {
   visibility: hidden;
   position: fixed;

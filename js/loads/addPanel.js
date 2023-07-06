@@ -12,11 +12,22 @@ elements.addBtn.addEventListener('click', async () => {
         return
     }
 
+    panelsPosition = [0]
+
+    panelsStore.getPanels().forEach((el) => {
+        panelsPosition.push(el.position)
+    })
+    
+    console.log(panelsPosition);
+
     let newPanel = {
         name: elements.input.value,
         color: elements.color.value,
+        position: Math.max(...panelsPosition) + 1,
         notes: []
     }
+
+    console.log(newPanel);
 
     // try {
     //     newPanel = await dataBase.addPanel(newPanel)
