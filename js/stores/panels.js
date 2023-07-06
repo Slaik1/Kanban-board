@@ -155,39 +155,47 @@ class PanelsStore {
         })
 
         div.addEventListener('drop', (event) => {
-            const droppedPanel = JSON.parse(event.dataTransfer.getData('panel')) //берём эллемент
-            const panelElement = this.createPanelElement(droppedPanel) // создаём из него div
-            const selectedElement = document.querySelector('.selected') // берём старый элемент
+            const droppedPanel = JSON.parse(event.dataTransfer.getData('panel'))
+            const panelElement = this.createPanelElement(droppedPanel)
+            const selectedElement = document.querySelector('.selected')
+            const pos = this.getPanelPos()
 
-            if (selectedElement === div) { ///если равен сам себе выход
+            if (selectedElement === div) {
                 return
             }
             
             if (selectedElement.nextElementSibling === div) {
-                this.setPositions(panelElement, div.nextSibling, selectedElement)
+                this.setPositions(panelElement, div.nextSibling, selectedElement, pos)
                 return
             }
-            
-            this.setPositions(panelElement, div, selectedElement)
+
+            this.setPositions(panelElement, div, selectedElement, pos)
         })
         return div
     }
 
-    setPositions (targetEl, newEl, oldEl)  {
-        this.panelsParentElement.insertBefore(targetEl, newEl)
-        oldEl.remove()
-        this.setDBpositions()
+    getPanelPos() {
+        let pos = []
+
+        this.panelsParentElement.childNodes.forEach((el) => {
+            pos.push(el.id)
+        })
+        return pos
     }
 
-    setDBpositions = () => {
-        const newPanelPositions = []
-            
-        this.panelsParentElement.childNodes.forEach((el) => {
-            newPanelPositions.push(el.id)
-        })
+    setPositions (targetEl, newEl, oldEl, pos) {
+        this.panelsParentElement.insertBefore(targetEl, newEl)
+        oldEl.remove()
+        this.setDBpositions(pos)
+    }
 
-        for (let i = 0; i < newPanelPositions.length; i++) {
-            dataBase.changeParamsPanel(newPanelPositions[i], {position: i+1})
+    setDBpositions = (oldPos) => {
+        const newPos = this.getPanelPos()
+
+        for (let i = 0; i < newPos.length; i++) {
+            if (oldPos[i] != newPos[i]) {
+                dataBase.changeParamsPanel(newPos[i], {position: i+1})
+            }
         }
     }
 
