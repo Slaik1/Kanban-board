@@ -11,6 +11,7 @@ class PanelsStore {
         const div = document.createElement('div')
         div.classList.add('board__panel')
         div.style.background = element.color
+        div.draggable = 'true'
         div.id = element.id
 
         const titleWrapper = document.createElement('div')
@@ -100,10 +101,17 @@ class PanelsStore {
                 return
             }
 
+            let notesPositions = [0]
+
+            notesStore.getNotes().forEach((el) => {
+                notesPositions.push(el.position)
+            })
+
             const newNote = {
                 title: addItemTitle.value,
                 text: textarea.value,
-                color: inputColor.value
+                color: inputColor.value,
+                position: Math.max(...notesPositions) + 1,
             }
 
             element.notes.push(newNote)
@@ -133,21 +141,19 @@ class PanelsStore {
         div.appendChild(notesList)
 
 
-        div.draggable = 'true'
+        
 
         div.addEventListener('dragover', (event) => {
             event.preventDefault()
         })
 
         div.addEventListener('dragstart', (event) => {
-            event.target.classList.add('selected')
+            //event.target.classList.add('selected')
             event.dataTransfer.setData('panel', JSON.stringify(element))
         })
 
         div.addEventListener('dragend', (event) => {
-            event.target.classList.remove('selected')
-            // event.
-            
+            //event.target.classList.remove('selected')
         })
 
         div.addEventListener('dragenter', () => {
@@ -155,14 +161,25 @@ class PanelsStore {
         })
 
         div.addEventListener('drop', (event) => {
-            const droppedPanel = JSON.parse(event.dataTransfer.getData('panel'))
-            const panelElement = this.createPanelElement(droppedPanel)
             const selectedElement = document.querySelector('.selected')
-            const pos = this.getPanelPos()
+
+            if (selectedElement === null) {
+                return
+            }
+
+            if (selectedElement.classList.contains('board__item')) {
+                return
+            }
 
             if (selectedElement === div) {
                 return
             }
+
+            const droppedPanel = JSON.parse(event.dataTransfer.getData('panel'))
+            const panelElement = this.createPanelElement(droppedPanel)
+            const pos = this.getPanelPos()
+
+
             
             if (selectedElement.nextElementSibling === div) {
                 this.setPositions(panelElement, div.nextSibling, selectedElement, pos)
@@ -208,7 +225,6 @@ class PanelsStore {
 
     setAll = (panels) => {
         this.panels = panels.sort((a, b) => a.position > b.position ? 1 : -1)
-        console.log(this.panels);
         this.clearDOM()
         this.printDom()
     }

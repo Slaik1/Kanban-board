@@ -12,13 +12,11 @@ elements.addBtn.addEventListener('click', async () => {
         return
     }
 
-    panelsPosition = [0]
+    let panelsPosition = [0]
 
     panelsStore.getPanels().forEach((el) => {
         panelsPosition.push(el.position)
     })
-    
-    console.log(panelsPosition);
 
     let newPanel = {
         name: elements.input.value,

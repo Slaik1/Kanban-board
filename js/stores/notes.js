@@ -12,6 +12,7 @@ class NotesStore {
         const div = document.createElement('div')
         div.classList.add('board__item')
         div.style.background = element.color
+        div.draggable = 'true'
 
         const title = document.createElement('p')
         title.classList.add('board__title')
@@ -39,7 +40,71 @@ class NotesStore {
             div.remove()
         })
 
+        div.addEventListener('dragover', (event) => {
+            event.preventDefault()
+        })
+
+        div.addEventListener('dragstart', (event) => {
+            event.target.classList.add('selected')
+            event.dataTransfer.setData('note', JSON.stringify(element))
+        })
+
+        div.addEventListener('dragend', (event) => {
+            event.target.classList.remove('selected')
+        })
+
+        div.addEventListener('dragenter', () => {
+            // console.log('dragenter');
+        })
+
+        div.addEventListener('drop', (event) => {
+            const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
+            const noteElement = this.createNoteElement(droppedNote)
+            const selectedElement = document.querySelector('.selected')
+            //const pos = this.getPanelPos()
+            
+            if (selectedElement === div) {
+                return
+            }
+
+            if (selectedElement.nextElementSibling === div) {
+                this.setPositions(noteElement, div.nextSibling, selectedElement)
+                return
+            }
+
+            this.setPositions(noteElement, div, selectedElement)
+        })
+
         return div
+    }
+
+    setPositions (targetEl, newEl, oldEl) {
+        this.notesParentElement.insertBefore(targetEl, newEl)
+        oldEl.remove()
+        this.setDOMNotes()
+        this.setDBNotes()
+    }
+
+    setDBNotes = () => {
+        dataBase.changeParamsPanel(this.panelId, {notes: this.notes})
+    }
+
+    setDOMNotes () {
+        let notesList = []
+        let pos = 1
+
+        this.notesParentElement.childNodes.forEach((el) => {
+            const noteObj = {
+                title: el.childNodes[0].innerText,
+                text: el.childNodes[1].innerText,
+                color: el.style.background,
+                position: pos
+            }
+            notesList.push(noteObj)
+            pos++
+        })
+
+        this.notes = notesList
     }
 
     printDom = () => {
@@ -50,7 +115,7 @@ class NotesStore {
     }
 
     setAll = (notes) => {
-        this.notes = notes
+        this.notes = notes.sort((a, b) => a.position > b.position ? 1 : -1)
         this.clearDOM()
         this.printDom()
     }
@@ -69,5 +134,9 @@ class NotesStore {
         while(this.notesParentElement.firstChild) {
             this.notesParentElement.removeChild(this.notesParentElement.lastChild)
         }
+    }
+
+    getNotes () {
+        return this.notes
     }
 }
