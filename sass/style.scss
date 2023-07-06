@@ -1,6 +1,7 @@
 @import "normalize.scss";
 @import "reset.scss";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import 'preloader';
 @import 'helpers.scss';
 @import 'board.scss';
 @import 'addPanel';
@@ -13,11 +14,12 @@ body {
     font-family: 'Inter', sans-serif;
     color: #1F2633;
     background: #DADEE5;
+    overflow-y:hidden;
 }
 
 .container {
     display: flex;
-    padding: 50px 0px 0px 5px;
+    padding: 24px 0px 0px 0px;
 }
 
 a {

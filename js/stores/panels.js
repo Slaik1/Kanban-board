@@ -13,6 +13,7 @@ class PanelsStore {
         div.style.background = element.color
         div.draggable = 'true'
         div.id = element.id
+        div.style.cursor = 'grab'
 
         const titleWrapper = document.createElement('div')
         titleWrapper.classList.add('board__title')
@@ -27,11 +28,11 @@ class PanelsStore {
         const deletePanelSvg = svgWrapper.children[0]
 
         addPanelSvg.addEventListener('click', () => {
-            if (addItem.style.display === 'none') {
-                addItem.style.display = 'flex'
+            if (addItem.style.display === 'flex') {
+                addItem.style.display = 'none'
                 return
             }
-            addItem.style.display = 'none'
+            addItem.style.display = 'flex'
         })
 
         deletePanelSvg.addEventListener('click', async () => {
@@ -148,12 +149,13 @@ class PanelsStore {
         })
 
         div.addEventListener('dragstart', (event) => {
-            //event.target.classList.add('selected')
+            event.target.classList.add('selected')
             event.dataTransfer.setData('panel', JSON.stringify(element))
         })
 
         div.addEventListener('dragend', (event) => {
-            //event.target.classList.remove('selected')
+            event.target.classList.remove('selected')
+            div.style.cursor = 'grab'
         })
 
         div.addEventListener('dragenter', () => {
@@ -167,11 +169,14 @@ class PanelsStore {
                 return
             }
 
-            if (selectedElement.classList.contains('board__item')) {
+            if (selectedElement === div) {
                 return
             }
 
-            if (selectedElement === div) {
+            if (selectedElement.classList.contains('board__item')) {
+                const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
+                const noteElement = notesStore.createNoteElement(droppedNote)
+                notesStore.setTargetPositions(noteElement, selectedElement)
                 return
             }
 

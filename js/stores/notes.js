@@ -51,35 +51,39 @@ class NotesStore {
 
         div.addEventListener('dragend', (event) => {
             event.target.classList.remove('selected')
-        })
-
-        div.addEventListener('dragenter', () => {
-            // console.log('dragenter');
+            if (this.notesParentElement.childNodes.length != this.notes.length) {
+                this.setDOMNotes()
+                this.setDBNotes()
+            }
         })
 
         div.addEventListener('drop', (event) => {
-            const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
-            const noteElement = this.createNoteElement(droppedNote)
             const selectedElement = document.querySelector('.selected')
-            //const pos = this.getPanelPos()
-            
             if (selectedElement === div) {
                 return
             }
 
+            const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
+            const noteElement = this.createNoteElement(droppedNote)
+
             if (selectedElement.nextElementSibling === div) {
-                this.setPositions(noteElement, div.nextSibling, selectedElement)
+                this.setTargetPositions(div.nextSibling, selectedElement, noteElement)
                 return
             }
 
-            this.setPositions(noteElement, div, selectedElement)
+            this.setTargetPositions(div, selectedElement, noteElement)
         })
 
         return div
     }
 
-    setPositions (targetEl, newEl, oldEl) {
-        this.notesParentElement.insertBefore(targetEl, newEl)
+    setTargetPositions (newEl, oldEl, targetEl = null) {
+        if (targetEl === null) {
+            this.notesParentElement.appendChild(newEl)
+        }
+        else{
+            this.notesParentElement.insertBefore(targetEl, newEl)
+        }
         oldEl.remove()
         this.setDOMNotes()
         this.setDBNotes()
