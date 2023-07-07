@@ -12,27 +12,28 @@ elements.addBtn.addEventListener('click', async () => {
         return
     }
 
+    let panelsPosition = [0]
+
+    panelsStore.getPanels().forEach((el) => {
+        panelsPosition.push(el.position)
+    })
+
     let newPanel = {
         name: elements.input.value,
         color: elements.color.value,
+        position: Math.max(...panelsPosition) + 1,
         notes: []
     }
 
-    // try {
-    //     newPanel = await dataBase.addPanel(newPanel)
-    //     panelsStore.add(newPanel)
-    //     alert('The panel was successfully added')
-    // } catch (error) {
-    //     alert(error)
-    // } finally {
-    //     elements.input.value = ''
-    // }
-
-    newPanel = await dataBase.addPanel(newPanel)
-    panelsStore.add(newPanel)
-    alert('The panel was successfully added')
-    elements.input.value = ''
-    
+    try {
+        newPanel = await dataBase.addPanel(newPanel)
+        panelsStore.add(newPanel)
+        alert('The panel was successfully added')
+    } catch (error) {
+        alert(error)
+    } finally {
+        elements.input.value = ''
+    }
 })
 
 elements.color.addEventListener('input', () => {

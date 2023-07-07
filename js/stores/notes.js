@@ -12,6 +12,7 @@ class NotesStore {
         const div = document.createElement('div')
         div.classList.add('board__item')
         div.style.background = element.color
+        div.draggable = 'true'
 
         const title = document.createElement('p')
         title.classList.add('board__title')
@@ -29,38 +30,106 @@ class NotesStore {
 
         delBtn.addEventListener('click', async () => {
             let index
+
             for (let i = 0; i < this.notes.length; i++) {
                 if (this.notes[i] === element) {
                     index = i
                 }
             }
+
             this.notes.splice(index, 1)
             await dataBase.changeParamsPanel(this.panelId, {notes: this.notes})
+
             div.remove()
         })
 
+        div.addEventListener('dragover', (event) => {
+            event.preventDefault()
+        })
+
+        div.addEventListener('dragstart', (event) => {
+            event.target.classList.add('selected')
+            event.dataTransfer.setData('note', JSON.stringify(element))
+        })
+
+        div.addEventListener('dragend', (event) => {
+            event.target.classList.remove('selected')
+            if (this.notesParentElement.childNodes.length != this.notes.length) {
+                this.setDOMNotes()
+                this.setDBNotes()
+            }
+        })
+
+        div.addEventListener('drop', (event) => {
+            const selectedElement = document.querySelector('.selected')
+
+            if (selectedElement === div) return
+
+            const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
+            const noteElement = this.createNoteElement(droppedNote)
+
+            if (selectedElement.nextElementSibling === div) {
+                this.setTargetPositions(div.nextSibling, selectedElement, noteElement)
+                return
+            }
+
+            this.setTargetPositions(div, selectedElement, noteElement)
+        })
         return div
     }
 
-    printDom = () => {
+    setTargetPositions(newEl, oldEl, targetEl = null) {
+        if (targetEl === null) {
+            this.notesParentElement.appendChild(newEl)
+        } else {
+            this.notesParentElement.insertBefore(targetEl, newEl)
+        }
+        oldEl.remove()
+        this.setDOMNotes()
+        this.setDBNotes()
+    }
+
+    setDBNotes() {
+        dataBase.changeParamsPanel(this.panelId, {notes: this.notes})
+    }
+
+    setDOMNotes() {
+        let notesList = []
+        let pos = 1
+
+        this.notesParentElement.childNodes.forEach((el) => {
+            const noteObj = {
+                title: el.childNodes[0].innerText,
+                text: el.childNodes[1].innerText,
+                color: el.style.background,
+                position: pos
+            }
+            notesList.push(noteObj)
+            pos++
+        })
+
+        this.notes = notesList
+    }
+
+    printDom() {
         this.notes.forEach((el) => {
             const div = this.createNoteElement(el)
             this.notesParentElement.appendChild(div)
         })
     }
 
-    setAll = (notes) => {
-        this.notes = notes
+    setAll(notes) {
+        this.notes = notes.sort((a, b) => a.position > b.position ? 1 : -1)
         this.clearDOM()
         this.printDom()
     }
 
-    printDomLast = () => {
+    printDomLast() {
         const div = this.createNoteElement(this.notes.at(-1))
         this.notesParentElement.appendChild(div)
     }
 
-    add = (newEl) => {
+    add(newEl) {
         this.notes = [...this.notes, newEl]
         this.printDomLast()
     }
@@ -69,5 +138,9 @@ class NotesStore {
         while(this.notesParentElement.firstChild) {
             this.notesParentElement.removeChild(this.notesParentElement.lastChild)
         }
+    }
+
+    getNotes() {
+        return this.notes
     }
 }

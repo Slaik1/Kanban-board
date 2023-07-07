@@ -11,6 +11,8 @@ class PanelsStore {
         const div = document.createElement('div')
         div.classList.add('board__panel')
         div.style.background = element.color
+        div.draggable = 'true'
+        div.id = element.id
 
         const titleWrapper = document.createElement('div')
         titleWrapper.classList.add('board__title')
@@ -25,16 +27,17 @@ class PanelsStore {
         const deletePanelSvg = svgWrapper.children[0]
 
         addPanelSvg.addEventListener('click', () => {
-            if (addItem.style.display === 'none') {
-                addItem.style.display = 'flex'
+            if (addItem.style.display === 'flex') {
+                addItem.style.display = 'none'
                 return
             }
-            addItem.style.display = 'none'
+            addItem.style.display = 'flex'
         })
 
         deletePanelSvg.addEventListener('click', async () => {
             await dataBase.deletePanel(element.id)
             div.remove()
+            this.panels.splice(element.index, 1)
         })
 
         titleWrapper.appendChild(svgWrapper)
@@ -98,10 +101,17 @@ class PanelsStore {
                 return
             }
 
+            let notesPositions = [0]
+
+            notesStore.getNotes().forEach((el) => {
+                notesPositions.push(el.position)
+            })
+
             const newNote = {
                 title: addItemTitle.value,
                 text: textarea.value,
-                color: inputColor.value
+                color: inputColor.value,
+                position: Math.max(...notesPositions) + 1,
             }
 
             element.notes.push(newNote)
@@ -112,7 +122,7 @@ class PanelsStore {
                 alertUser('The note was added')
             } catch (error) {
                 alert(error)
-            }finally{
+            } finally {
                 addItemTitle.value = ''
                 textarea.value = ''
             }
@@ -130,28 +140,91 @@ class PanelsStore {
 
         div.appendChild(notesList)
 
+        div.addEventListener('dragover', (event) => {
+            event.preventDefault()
+        })
+
+        div.addEventListener('dragstart', (event) => {
+            event.target.classList.add('selected')
+            event.dataTransfer.setData('panel', JSON.stringify(element))
+        })
+
+        div.addEventListener('dragend', (event) => {
+            event.target.classList.remove('selected')
+        })
+
+        div.addEventListener('drop', (event) => {
+            const selectedElement = document.querySelector('.selected')
+
+            if (selectedElement === null || 
+            selectedElement === div || 
+            Array.from(notesStore.notesParentElement.childNodes).includes(selectedElement)) return
+
+            if (selectedElement.classList.contains('board__item')) {
+                const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
+                const noteElement = notesStore.createNoteElement(droppedNote)
+                notesStore.setTargetPositions(noteElement, selectedElement)
+                return
+            }
+
+            const droppedPanel = JSON.parse(event.dataTransfer.getData('panel'))
+            const panelElement = this.createPanelElement(droppedPanel)
+            const pos = this.getPanelPos()
+            
+            if (selectedElement.nextElementSibling === div) {
+                this.setPositions(panelElement, div.nextSibling, selectedElement, pos)
+                return
+            }
+
+            this.setPositions(panelElement, div, selectedElement, pos)
+        })
         return div
     }
 
-    printDom = () => {
+    getPanelPos() {
+        let pos = []
+
+        this.panelsParentElement.childNodes.forEach((el) => {
+            pos.push(el.id)
+        })
+        return pos
+    }
+
+    setPositions(targetEl, newEl, oldEl, pos) {
+        this.panelsParentElement.insertBefore(targetEl, newEl)
+        oldEl.remove()
+        this.setDBpositions(pos)
+    }
+
+    setDBpositions(oldPos) {
+        const newPos = this.getPanelPos()
+
+        for (let i = 0; i < newPos.length; i++) {
+            if (oldPos[i] != newPos[i]) {
+                dataBase.changeParamsPanel(newPos[i], {position: i+1})
+            }
+        }
+    }
+
+    printDom() {
         this.panels.forEach((el) => {
             const div = this.createPanelElement(el)
             this.panelsParentElement.appendChild(div)
         })
     }
 
-    setAll = (panels) => {
-        this.panels = panels
+    setAll(panels) {
+        this.panels = panels.sort((a, b) => a.position > b.position ? 1 : -1)
         this.clearDOM()
         this.printDom()
     }
 
-    printDomLast = () => {
+    printDomLast() {
         const div = this.createPanelElement(this.panels.at(-1))
         this.panelsParentElement.appendChild(div)
     }
 
-    add = (newEl) => {
+    add(newEl) {
         this.panels = [...this.panels, newEl]
         this.printDomLast()
     }
@@ -160,5 +233,9 @@ class PanelsStore {
         while(this.panelsParentElement.firstChild) {
             this.panelsParentElement.removeChild(this.panelsParentElement.lastChild)
         }
+    }
+
+    getPanels() {
+        return this.panels
     }
 }
