@@ -13,7 +13,6 @@ class PanelsStore {
         div.style.background = element.color
         div.draggable = 'true'
         div.id = element.id
-        div.style.cursor = 'grab'
 
         const titleWrapper = document.createElement('div')
         titleWrapper.classList.add('board__title')
@@ -123,7 +122,7 @@ class PanelsStore {
                 alertUser('The note was added')
             } catch (error) {
                 alert(error)
-            }finally{
+            } finally {
                 addItemTitle.value = ''
                 textarea.value = ''
             }
@@ -141,9 +140,6 @@ class PanelsStore {
 
         div.appendChild(notesList)
 
-
-        
-
         div.addEventListener('dragover', (event) => {
             event.preventDefault()
         })
@@ -155,23 +151,14 @@ class PanelsStore {
 
         div.addEventListener('dragend', (event) => {
             event.target.classList.remove('selected')
-            div.style.cursor = 'grab'
-        })
-
-        div.addEventListener('dragenter', () => {
-            // console.log('dragenter');
         })
 
         div.addEventListener('drop', (event) => {
             const selectedElement = document.querySelector('.selected')
 
-            if (selectedElement === null) {
-                return
-            }
-
-            if (selectedElement === div) {
-                return
-            }
+            if (selectedElement === null || 
+            selectedElement === div || 
+            Array.from(notesStore.notesParentElement.childNodes).includes(selectedElement)) return
 
             if (selectedElement.classList.contains('board__item')) {
                 const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
@@ -183,8 +170,6 @@ class PanelsStore {
             const droppedPanel = JSON.parse(event.dataTransfer.getData('panel'))
             const panelElement = this.createPanelElement(droppedPanel)
             const pos = this.getPanelPos()
-
-
             
             if (selectedElement.nextElementSibling === div) {
                 this.setPositions(panelElement, div.nextSibling, selectedElement, pos)
@@ -205,13 +190,13 @@ class PanelsStore {
         return pos
     }
 
-    setPositions (targetEl, newEl, oldEl, pos) {
+    setPositions(targetEl, newEl, oldEl, pos) {
         this.panelsParentElement.insertBefore(targetEl, newEl)
         oldEl.remove()
         this.setDBpositions(pos)
     }
 
-    setDBpositions = (oldPos) => {
+    setDBpositions(oldPos) {
         const newPos = this.getPanelPos()
 
         for (let i = 0; i < newPos.length; i++) {
@@ -221,25 +206,25 @@ class PanelsStore {
         }
     }
 
-    printDom = () => {
+    printDom() {
         this.panels.forEach((el) => {
             const div = this.createPanelElement(el)
             this.panelsParentElement.appendChild(div)
         })
     }
 
-    setAll = (panels) => {
+    setAll(panels) {
         this.panels = panels.sort((a, b) => a.position > b.position ? 1 : -1)
         this.clearDOM()
         this.printDom()
     }
 
-    printDomLast = () => {
+    printDomLast() {
         const div = this.createPanelElement(this.panels.at(-1))
         this.panelsParentElement.appendChild(div)
     }
 
-    add = (newEl) => {
+    add(newEl) {
         this.panels = [...this.panels, newEl]
         this.printDomLast()
     }

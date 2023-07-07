@@ -30,13 +30,16 @@ class NotesStore {
 
         delBtn.addEventListener('click', async () => {
             let index
+
             for (let i = 0; i < this.notes.length; i++) {
                 if (this.notes[i] === element) {
                     index = i
                 }
             }
+
             this.notes.splice(index, 1)
             await dataBase.changeParamsPanel(this.panelId, {notes: this.notes})
+
             div.remove()
         })
 
@@ -59,9 +62,8 @@ class NotesStore {
 
         div.addEventListener('drop', (event) => {
             const selectedElement = document.querySelector('.selected')
-            if (selectedElement === div) {
-                return
-            }
+
+            if (selectedElement === div) return
 
             const droppedNote = JSON.parse(event.dataTransfer.getData('note'))
             const noteElement = this.createNoteElement(droppedNote)
@@ -73,15 +75,13 @@ class NotesStore {
 
             this.setTargetPositions(div, selectedElement, noteElement)
         })
-
         return div
     }
 
-    setTargetPositions (newEl, oldEl, targetEl = null) {
+    setTargetPositions(newEl, oldEl, targetEl = null) {
         if (targetEl === null) {
             this.notesParentElement.appendChild(newEl)
-        }
-        else{
+        } else {
             this.notesParentElement.insertBefore(targetEl, newEl)
         }
         oldEl.remove()
@@ -89,11 +89,11 @@ class NotesStore {
         this.setDBNotes()
     }
 
-    setDBNotes = () => {
+    setDBNotes() {
         dataBase.changeParamsPanel(this.panelId, {notes: this.notes})
     }
 
-    setDOMNotes () {
+    setDOMNotes() {
         let notesList = []
         let pos = 1
 
@@ -111,25 +111,25 @@ class NotesStore {
         this.notes = notesList
     }
 
-    printDom = () => {
+    printDom() {
         this.notes.forEach((el) => {
             const div = this.createNoteElement(el)
             this.notesParentElement.appendChild(div)
         })
     }
 
-    setAll = (notes) => {
+    setAll(notes) {
         this.notes = notes.sort((a, b) => a.position > b.position ? 1 : -1)
         this.clearDOM()
         this.printDom()
     }
 
-    printDomLast = () => {
+    printDomLast() {
         const div = this.createNoteElement(this.notes.at(-1))
         this.notesParentElement.appendChild(div)
     }
 
-    add = (newEl) => {
+    add(newEl) {
         this.notes = [...this.notes, newEl]
         this.printDomLast()
     }
@@ -140,7 +140,7 @@ class NotesStore {
         }
     }
 
-    getNotes () {
+    getNotes() {
         return this.notes
     }
 }

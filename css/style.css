@@ -374,7 +374,6 @@ table {
 }
 
 .preloader {
-  /* size */
   width: 70px;
   height: 70px;
   position: absolute;
@@ -866,4 +865,10 @@ a {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+}
+
+.grabbable {
+  cursor: move;
+  cursor: grab;
+  cursor: -webkit-grab;
 }
