@@ -1,4 +1,4 @@
-const dataBase = new DataBase('http://localhost:3000')
+const dataBase = new DataBase('https://slaik1.github.io/Kanban-board/server/db.json')
 const panelsStore = new PanelsStore('#panelsList')
 const loader = document.querySelector('#preloader')
 
