@@ -1,31 +1,5 @@
 {
   "panels": [
-    {
-      "name": "123",
-      "color": "#ffffff",
-      "position": 2,
-      "notes": [],
-      "id": 1
-    },
-    {
-      "name": "11",
-      "color": "#b35151",
-      "position": 1,
-      "notes": [
-        {
-          "title": "3",
-          "text": "3",
-          "color": "rgb(218, 222, 229)",
-          "position": 1
-        },
-        {
-          "title": "3",
-          "text": "3",
-          "color": "rgb(84, 106, 146)",
-          "position": 2
-        }
-      ],
-      "id": 2
-    }
+   
   ]
 }
