@@ -1,12 +1,15 @@
 class DataBase {
     baseUrl
+    endpoints = {
+        panels:'/panels/'
+    }
 
     constructor(baseUrl) {
         this.baseUrl = baseUrl
     }
 
     async addPanel(panelObj) {
-        const request = await fetch(this.baseUrl, {
+        const request = await fetch(this.baseUrl + this.endpoints.panels, {
             method: 'POST',
             headers: {'content-type':'application/json'},
             body: JSON.stringify(panelObj)
@@ -15,7 +18,7 @@ class DataBase {
     }
 
     async getPanels() {
-        const request = await fetch(this.baseUrl, {
+        const request = await fetch(this.baseUrl + this.endpoints.panels, {
             method: 'GET',
             headers: {'content-type':'application/json'},
         })
@@ -23,7 +26,7 @@ class DataBase {
     }
 
     async getParamPanel(key, value) {
-        const url = new URL(this.baseUrl)
+        const url = new URL(this.baseUrl + this.endpoints.panels)
         url.searchParams.append(key, value)
         const request = await fetch(url, {
             method: 'GET',
@@ -33,7 +36,7 @@ class DataBase {
     }
 
     async changeParamsPanel(id, param) {
-        const request = await fetch(this.baseUrl + '/' + id, {
+        const request = await fetch(this.baseUrl + this.endpoints.panels + id, {
             method: 'PATCH',
             headers: {'content-type':'application/json'},
             body: JSON.stringify(param)
@@ -42,7 +45,7 @@ class DataBase {
     }
 
     async setNote(panelId, noteArray) {
-        const request = await fetch(this.baseUrl + '/' + id, {
+        const request = await fetch(this.baseUrl + this.endpoints.panels + panelId, {
             method: 'PATCH',
             headers: {'content-type':'application/json'},
             body: JSON.stringify({notes: noteArray})
@@ -51,7 +54,7 @@ class DataBase {
     }
 
     async deletePanel(panelId) {
-        await fetch(this.baseUrl + '/' + id, {
+        await fetch(this.baseUrl + this.endpoints.panels + panelId, {
             method: 'DELETE'
         })
     }

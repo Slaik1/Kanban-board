@@ -8,9 +8,9 @@
       "id": 1
     },
     {
-      "name": "123",
-      "color": "#ffffff",
-      "position": 3,
+      "name": "11",
+      "color": "#b35151",
+      "position": 1,
       "notes": [
         {
           "title": "3",
@@ -19,33 +19,13 @@
           "position": 1
         },
         {
-          "title": "2",
-          "text": "2",
-          "color": "rgb(218, 222, 229)",
+          "title": "3",
+          "text": "3",
+          "color": "rgb(84, 106, 146)",
           "position": 2
         }
       ],
       "id": 2
-    },
-    {
-      "name": "1",
-      "color": "#ffffff",
-      "position": 1,
-      "notes": [
-        {
-          "title": "1",
-          "text": "1",
-          "color": "rgb(218, 222, 229)",
-          "position": 1
-        },
-        {
-          "title": "3",
-          "text": "3",
-          "color": "rgb(218, 222, 229)",
-          "position": 2
-        }
-      ],
-      "id": 3
     }
   ]
 }

@@ -90,7 +90,6 @@ class NotesStore {
     }
 
     setDBNotes() {
-        console.log(this.panelId, this.notes);
         dataBase.changeParamsPanel(this.panelId, {notes: this.notes})
     }
 
