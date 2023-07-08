@@ -6,7 +6,7 @@
 ## Tech
 
 - HTML
-- CSS 
+- SCSS
 - JS 
 - Json Server
 - Mock Api
