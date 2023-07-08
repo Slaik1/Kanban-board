@@ -22,7 +22,7 @@ class DataBase {
             method: 'GET',
             headers: {'content-type':'application/json'},
         })
-        return await request.json().panels
+        return await request.json()
     }
 
     async getParamPanel(key, value) {
