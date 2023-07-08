@@ -1,7 +1,7 @@
-// async function test() {
-//     const data = new DataBase('http://localhost:3000')
-//     const request = await data.changeParamsPanel(2, {position: 123})
-//     console.log(request);
-// }
+async function test() {
+    const data = new DataBase('https://slaik1.github.io/Kanban-board/server/db.json')
+    const request = await data.getPanels()
+    console.log(request);
+}
 
-// test()
+test()
