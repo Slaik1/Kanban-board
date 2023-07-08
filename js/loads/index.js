@@ -1,4 +1,4 @@
-const dataBase = new DataBase('https://649c69660480757192381e95.mockapi.io')
+const dataBase = new DataBase('http://localhost:3000')
 const panelsStore = new PanelsStore('#panelsList')
 const loader = document.querySelector('#preloader')
 
