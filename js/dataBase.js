@@ -37,7 +37,7 @@ class DataBase {
 
     async changeParamsPanel(id, param) {
         const request = await fetch(this.baseUrl + this.endpoints.panels + id, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {'content-type':'application/json'},
             body: JSON.stringify(param)
         })
@@ -46,7 +46,7 @@ class DataBase {
 
     async setNote(panelId, noteArray) {
         const request = await fetch(this.baseUrl + this.endpoints.panels + panelId, {
-            method: 'PUT',
+            method: 'PATCH',
             headers: {'content-type':'application/json'},
             body: JSON.stringify({notes: noteArray})
         })
