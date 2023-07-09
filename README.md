@@ -18,8 +18,8 @@ Requires [Node.js](https://nodejs.org/) v10+ to run.
 To run web app locally:
 
 ```sh
-npm i json-server
-npm run server
+npm i
+npm run prod
 ```
 ## BTW
 

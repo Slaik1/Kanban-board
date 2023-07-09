@@ -6,6 +6,8 @@
   "scripts": {
     "sass:dev": "sass --watch --update --style=expanded ./sass:./css",
     "sass:prod": "sass --update --style=expanded ./sass:./css",
-    "server": "json-server ./server/db.json --static ./"
+    "server": "json-server ./server/db.json --static ./",
+    "prod": "npm run sass:prod && npm run server",
+    "dev": "npm run sass:dev && npm run server"
   }
 }
