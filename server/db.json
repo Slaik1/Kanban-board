@@ -1,5 +1,88 @@
 {
   "panels": [
-   
+    {
+      "name": "In Progress",
+      "color": "#b18198",
+      "position": 3,
+      "notes": [
+        {
+          "title": "Database Integration",
+          "text": "Integrate the application with the MySQL database.",
+          "color": "rgb(161, 180, 211)",
+          "position": 1
+        },
+        {
+          "title": "User Registration",
+          "text": "Implement user registration functionality with email verification.\n\nDescription: Develop a user registration system that allows new users to create an account on the platform. The registration process should include email verification to ensure the authenticity of user accounts.\nAcceptance Criteria: Users should be able to enter their email address, choose a secure password, and receive a verification email. Upon clicking the verification link, their account should be marked as verified in the system",
+          "color": "rgb(161, 211, 176)",
+          "position": 2
+        }
+      ],
+      "id": 3
+    },
+    {
+      "name": "Done",
+      "color": "#c33232",
+      "position": 2,
+      "notes": [
+        {
+          "title": "Release v1.0",
+          "text": "Prepare and deploy the first stable release of the software.",
+          "color": "rgb(161, 180, 211)",
+          "position": 1
+        },
+        {
+          "title": "Performance Optimization",
+          "text": "Optimize the application's performance by implementing caching mechanisms.",
+          "color": "rgb(161, 180, 211)",
+          "position": 2
+        },
+        {
+          "title": "Design Wireframes",
+          "text": "Create wireframes for the new dashboard layout.",
+          "color": "rgb(206, 161, 161)",
+          "position": 3
+        },
+        {
+          "title": "Refactor Login Process",
+          "text": "Improve the code structure and optimize the login process.",
+          "color": "rgb(255, 255, 255)",
+          "position": 4
+        },
+        {
+          "title": "Homepage Redesign",
+          "text": "Redesign the homepage layout to improve user experience.",
+          "color": "rgb(218, 222, 229)",
+          "position": 5
+        }
+      ],
+      "id": 4
+    },
+    {
+      "name": "Backlog",
+      "color": "#a99e9e",
+      "position": 1,
+      "notes": [
+        {
+          "title": "User Registration",
+          "text": "Implement user registration functionality with email verification.",
+          "color": "#a7afbe",
+          "position": 1
+        },
+        {
+          "title": "Bug Fix",
+          "text": " Investigate and fix the issue with the search functionality.",
+          "color": "#9f416a",
+          "position": 2
+        },
+        {
+          "title": "Feature Request",
+          "text": "Add a new feature to allow users to customize their profile pictures.",
+          "color": "#616fa8",
+          "position": 3
+        }
+      ],
+      "id": 5
+    }
   ]
 }
