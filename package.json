@@ -1,8 +1,11 @@
 {
   "dependencies": {
-    "json-server": "^0.17.3"
+    "json-server": "^0.17.3",
+    "sass": "^1.63.6"
   },
   "scripts": {
+    "sass:dev": "sass --watch --update --style=expanded ./sass:./css",
+    "sass:prod": "sass --update --style=expanded ./sass:./css",
     "server": "json-server ./server/db.json --static ./"
   }
 }
